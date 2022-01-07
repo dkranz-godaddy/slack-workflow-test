@@ -27,5 +27,6 @@ jobs:
           failure=$(printf "$failure_template" "$branch_name" "$slack_id" "$server_url" "$repository" "$run_id")
           echo "failure_message=${failure}" >> $GITHUB_ENV
           echo "$failure_message"
-          workflow="${{ github.event.workflow_run }}"
+          workflow="${{ github.event.workflow_run.head_branch }}"
+          pr="${{ github.event.workflow_run.pull_requests }}"
 
