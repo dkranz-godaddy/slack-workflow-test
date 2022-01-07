@@ -30,7 +30,7 @@ jobs:
           workflow="${{ github.event.workflow_run.head_branch }}"
           pr="${{ github.event.workflow_run.pull_requests }}"
           suite="${{ github.event.workflow_run.url }}"
-          sha="${{ github.event.workflow_run.head_sha }}"
-          sender="${{ github.event.workflow_run.sender }}"
-          idr="${{ github.event.workflow_run.run_id }}"
+          worfklow="${{ github.event.workflow_run.workflow_id }}"
+          name="${{ github.event.workflow_run.name }}"
+          idr="${{ github.event.workflow_run.id }}"
 
