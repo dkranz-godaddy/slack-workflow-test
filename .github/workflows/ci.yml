@@ -8,4 +8,4 @@ jobs:
     steps:
     - uses: actions/checkout@v1
     - name: action
-      run: exit 1
+      run: echo "yo whaddup"
