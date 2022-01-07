@@ -26,5 +26,5 @@ jobs:
           failure_template=`cat .github/workflows/slack_messages/failure_template`
           failure=$(printf "$failure_template" "$branch_name" "$slack_id" "$server_url" "$repository" "$run_id")
           echo "failure_message=${failure}" >> $GITHUB_ENV
-          echo "failure_message"
+          echo "$failure_message"
 
