@@ -46,9 +46,8 @@ jobs:
           run_id="${{ github.event.workflow_run.id }}"
           event_owner="${{ github.event.sender.login }}"
           slack_id=${event_owner%-godaddy}
-          commit_message="${{ github.event.workflow_run.head_commit.message }}"
           success_template=`cat .github/workflows/slack_messages/success_template`
-          success=$(printf "$success_template" "$job_status" "$commit_message" "$slack_id" "$server_url" "$repository" "$run_id")
+          success=$(printf "$success_template" "$job_status" "$slack_id" "$server_url" "$repository" "$run_id")
           echo "success_message=${success}" >> $GITHUB_ENV
           pr="${{ github.event.workflow_run.pull_request[0] }}"
       - name: Post success status to Slack channel
