@@ -44,7 +44,10 @@ jobs:
           success_template=`cat .github/workflows/slack_messages/success_template`
           success=$(printf "$success_template" "$job_status" "$server_url" "$repository" "$run_id")
           echo "success_message=${success}" >> $GITHUB_ENV
-          pr="${{ github.event.workflow_run.pull_request[0] }}"
+      - name: Dump github context
+        env:
+          GITHUB_CONTEXT: ${{ toJson(github) }}
+        run: echo "$GITHUB_CONTEXT"
       - name: Post success status to Slack channel
         uses: slackapi/slack-github-action@v1.16.0
         with:
