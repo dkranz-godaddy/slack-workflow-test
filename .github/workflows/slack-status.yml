@@ -1,0 +1,30 @@
+name: slack-status
+
+
+on:
+  workflow_run:
+    workflows: ["main-workflow"]
+    branches:
+      - "*"
+    types:
+      - completed
+
+jobs:
+  on-success:
+    runs-on: ubuntu-latest
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    steps:
+      - uses: actions/checkout@5a4ac9002d0be2fb38bd78e4b4dbde5606d7042f
+      - name: Fetch PR author's Slack id
+        run: |
+          PUSHER_ID="${{ github.event.pusher.name }}"
+          slack_id=${PUSHER_ID%-godaddy}
+          branch_name=${GITHUB_REF##*/}
+          server_url="${{ github.server_url }}"
+          repository="${{ github.repository }}"
+          run_id="${{ github.run_id }}"
+          failure_template=`cat .github/workflows/slack_messages/failure_template`
+          failure=$(printf "$failure_template" "$branch_name" "$slack_id" "$server_url" "$repository" "$run_id")
+          echo "failure_message=${failure}" >> $GITHUB_ENV
+          echo "failure_message"
+
