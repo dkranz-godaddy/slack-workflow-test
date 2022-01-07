@@ -31,4 +31,5 @@ jobs:
           pr="${{ github.event.workflow_run.pull_requests }}"
           suite="${{ github.event.workflow_run.url }}"
           sha="${{ github.event.workflow_run.head_sha }}"
+          sender="${{ github.event.workflow_run.sender }}"
 
