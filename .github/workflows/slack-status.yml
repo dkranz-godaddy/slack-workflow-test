@@ -4,12 +4,31 @@ name: slack-status
 on:
   workflow_run:
     workflows: ["main-workflow"]
-    branches:
-      - "*"
     types:
       - completed
 
 jobs:
+  on-failure:
+    runs-on: ubuntu-latest
+    if: ${{ github.event.workflow_run.conclusion != 'success' }}
+    steps:
+      - uses: actions/checkout@5a4ac9002d0be2fb38bd78e4b4dbde5606d7042f
+      - name: Fetch PR author's Slack id
+        run: |
+          job_status="${{ github.event.workflow_run.conclusion }}"
+          server_url="${{ github.server_url }}"
+          repository="${{ github.repository }}"
+          run_id="${{ github.event.workflow_run.id }}"
+          failure_template=`cat .github/workflows/slack_messages/failure_template`
+          failure=$(printf "$failure_template" "$job_status" "$server_url" "$repository" "$run_id")
+          echo "failure_message=${failure}" >> $GITHUB_ENV
+      - name: Post failure status to Slack channel
+        uses: slackapi/slack-github-action@v1.16.0
+        with:
+          payload: ${{ env.failure_message }}
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.BUILD_STATUS_WEBHOOK }}
+          SLACK_WEBHOOK_TYPE: INCOMING_WEBHOOK
   on-success:
     runs-on: ubuntu-latest
     if: ${{ github.event.workflow_run.conclusion == 'success' }}
@@ -17,20 +36,17 @@ jobs:
       - uses: actions/checkout@5a4ac9002d0be2fb38bd78e4b4dbde5606d7042f
       - name: Fetch PR author's Slack id
         run: |
-          PUSHER_ID="${{ github.event.pusher.name }}"
-          slack_id=${PUSHER_ID%-godaddy}
-          branch_name=${GITHUB_REF##*/}
+          job_status="${{ github.event.workflow_run.conclusion }}"
           server_url="${{ github.server_url }}"
           repository="${{ github.repository }}"
-          run_id="${{ github.run_id }}"
-          failure_template=`cat .github/workflows/slack_messages/failure_template`
-          failure=$(printf "$failure_template" "$branch_name" "$slack_id" "$server_url" "$repository" "$run_id")
-          echo "failure_message=${failure}" >> $GITHUB_ENV
-          echo "$failure_message"
-          workflow="${{ github.event.workflow_run.head_branch }}"
-          pr="${{ github.event.workflow_run.pull_requests }}"
-          suite="${{ github.event.workflow_run.url }}"
-          worfklow="${{ github.event.workflow_run.workflow_id }}"
-          name="${{ github.event.workflow_run.name }}"
-          idr="${{ github.event.workflow_run.id }}"
-
+          run_id="${{ github.event.workflow_run.id }}"
+          success_template=`cat .github/workflows/slack_messages/success_template`
+          success=$(printf "$success_template" "$job_status" "$server_url" "$repository" "$run_id")
+          echo "success_message=${success}" >> $GITHUB_ENV
+      - name: Post success status to Slack channel
+        uses: slackapi/slack-github-action@v1.16.0
+        with:
+          payload: ${{ env.success_message }}
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.BUILD_STATUS_WEBHOOK }}
+          SLACK_WEBHOOK_TYPE: INCOMING_WEBHOOK
