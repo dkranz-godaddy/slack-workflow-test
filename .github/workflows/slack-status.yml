@@ -32,4 +32,5 @@ jobs:
           suite="${{ github.event.workflow_run.url }}"
           sha="${{ github.event.workflow_run.head_sha }}"
           sender="${{ github.event.workflow_run.sender }}"
+          idr="${{ github.event.workflow_run.run_id }}"
 
