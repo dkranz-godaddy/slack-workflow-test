@@ -26,7 +26,7 @@ jobs:
           failure=$(printf "$failure_template" "$job_status" "$slack_id" "$server_url" "$repository" "$run_id")
           echo "failure_message=${failure}" >> $GITHUB_ENV
       - name: Post failure status to Slack channel
-        uses: slackapi/slack-github-action@v1.16.0
+        uses: slackapi/slack-github-action@v1.18
         with:
           payload: ${{ env.failure_message }}
         env:
@@ -53,7 +53,7 @@ jobs:
           GITHUB_CONTEXT: ${{ toJson(github) }}
         run: echo "$GITHUB_CONTEXT"
       - name: Post success status to Slack channel
-        uses: slackapi/slack-github-action@v1.16.0
+        uses: slackapi/slack-github-action@v1.18
         with:
           payload: ${{ env.success_message }}
         env:
