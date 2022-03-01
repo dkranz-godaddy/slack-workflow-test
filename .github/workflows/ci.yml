@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
     inputs:
       skip-integration-test:
-        description: Skip integration tests or not during manual deploy
+        description: Skip integration tests
         required: true
         default: true
         type: boolean
