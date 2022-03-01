@@ -1,11 +1,19 @@
 name: main-workflow
 
-on: push
+on:
+  workflow_dispatch:
+    inputs:
+      skip-integration-test:
+        description: Skip integration tests or not during manual deploy
+        required: true
+        default: true
+        type: boolean
 
 jobs:
   example-jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v1
-    - name: action
-      run: echo "No shame"
+    - name: Integration tests
+      if: github.event.inputs.skip-integration-test == 'false' 
+      run: echo "What if"
