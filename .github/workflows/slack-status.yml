@@ -1,12 +1,12 @@
 name: slack-status
 
 
-on: disabled
-#  workflow_run:
-#    workflows: ["main-workflow"]
-#    branches: [main]
-#    types:
-#      - completed
+on:
+  workflow_run:
+    workflows: ["main-workflow"]
+    branches: [main]
+    types:
+      - completed
 
 jobs:
   on-failure:
