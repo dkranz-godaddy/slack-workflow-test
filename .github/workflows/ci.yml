@@ -22,7 +22,7 @@ jobs:
       - first-job
     if: github.event.inputs.skip-second-job == 'false' 
     steps:
-      - run: echo "I am the second job and I run only sometimes!"
+      - run: echo "I am the second job and I run only sometimes!
   third-job:
     name: third-job
     runs-on: ubuntu-latest
@@ -31,4 +31,4 @@ jobs:
       - second-job
     if: always() && (needs.second-job.result == 'success' || needs.second-job.result == 'skipped')
     steps:
-      - run: echo "I'm the third job!
+      - run: echo "I'm the third job!"
