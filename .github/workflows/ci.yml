@@ -31,4 +31,4 @@ jobs:
       - second-job
     if: needs.second-job.result == 'success' || needs.second-job.result == 'skipped'
     steps:
-      - run: echo "I'm the third job! I run only if the first job runs and the second job is skipped or successful."
+      - run: echo "I'm the third job!
