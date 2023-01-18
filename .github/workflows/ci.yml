@@ -29,6 +29,6 @@ jobs:
     needs:
       - first-job
       - second-job
-    if: needs.second-job.result == 'success' || needs.second-job.result == 'skipped'
+    if: always() && (needs.second-job.result == 'success' || needs.second-job.result == 'skipped')
     steps:
       - run: echo "I'm the third job!
