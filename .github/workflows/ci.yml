@@ -26,10 +26,9 @@ jobs:
   third-job:
     name: third-job
     runs-on: ubuntu-latest
-    steps:
     needs:
       - first-job
       - second-job
     if: needs.second-job.result == 'success' || needs.second-job.result == 'skipped'
-    steps: 
+    steps:
       - run: echo "I'm the third job! I run only if the first job runs and the second job is skipped or successful."
