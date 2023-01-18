@@ -1,0 +1,21 @@
+# This workflow was for testing the slack-status workflow!
+
+name: main-workflow
+
+on:
+  workflow_dispatch:
+    inputs:
+      skip-integration-test:
+        description: Skip integration tests
+        required: true
+        default: true
+        type: boolean
+
+jobs:
+  example-jobs:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v1
+    - name: Integration tests
+      if: github.event.inputs.skip-integration-test == 'false' 
+      run: echo "What if"
