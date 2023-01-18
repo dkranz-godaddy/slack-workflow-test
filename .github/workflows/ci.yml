@@ -14,22 +14,22 @@ jobs:
     name: first-job
     runs-on: ubuntu-latest
     steps: 
-      run: echo "I'm the first job that runs every time!"
+      - run: echo "I'm the first job that runs every time!"
   second-job:
     name: second-job
     runs-on: ubuntu-latest
-    steps:
-    - needs:
+    needs:
       - first-job
-      if: github.event.inputs.skip-second-job == 'false' 
-      run: echo "I am the second job and I run only sometimes!"
+    if: github.event.inputs.skip-second-job == 'false' 
+    steps:
+      - run: echo "I am the second job and I run only sometimes!"
   third-job:
     name: third-job
     runs-on: ubuntu-latest
     steps:
-    - needs:
+    needs:
       - first-job
       - second-job
-      if: needs.second-job.result == 'success' || needs.second-job.result == 'skipped'
-      steps: 
-        - run: echo "I'm the third job! I run only if the first job runs and the second job is skipped or successful."
+    if: needs.second-job.result == 'success' || needs.second-job.result == 'skipped'
+    steps: 
+      - run: echo "I'm the third job! I run only if the first job runs and the second job is skipped or successful."
