@@ -29,6 +29,6 @@ jobs:
     needs:
       - first-job
       - second-job
-    if: failure() == false
+    if: ${{ !failure() }}
     steps:
       - run: echo "I'm the third job!"
